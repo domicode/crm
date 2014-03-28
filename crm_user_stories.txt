@@ -1,0 +1,13 @@
+I want to be able to add a customer
+
+I want to remvoe a customer 
+I want to add an address
+I want to add a phone number
+I want to add an email address
+I want to change a customer's information
+I want to see a customers's information 
+
++ I want to record notes about a customer
+
+I want to see all the notes about a customer
+I want to sort the notes by something 
