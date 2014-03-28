@@ -1,6 +1,8 @@
 require "./rolodex"
 require "./contact"
+require "./notes_tool"
 require "colorize"
+require "debugger"
 
 class Runner
 
@@ -15,7 +17,7 @@ class Runner
     puts "3. Remove a contact"
     puts "4. Edit a contact"
     puts "5. Add/change details to a contact"
-    #puts "6. Take notes for a contact"
+    puts "6. Notes tool"
     puts "0. To exit".red
     puts "CRM by " +  ("D".yellow +  "O".green +  "M".red +  "I".blue).bold
   end
@@ -25,6 +27,14 @@ class Runner
     puts "1. Add/change an address"
     puts "2. Add/change a phone number "
     puts "3. Add/change an e-mail address"
+    puts "0. back to main menu".red
+  end
+
+  def notes_menu
+    puts "Adding / changing notes for your contact".green
+    puts "1. Add a new note"
+    puts "2. Change a note"
+    puts "3. Display all notes"
     puts "0. back to main menu".red
   end
 
@@ -95,6 +105,12 @@ class Runner
     end
   end
 
+  def notes
+    puts "Enter contact's ID"
+    id = gets.chomp.to_i
+    @rolodex.note(id)
+  end
+
   def run
     done = false
     while !done
@@ -112,6 +128,8 @@ class Runner
         edit_contact
       elsif input == 5
         add_details
+      elsif input == 6
+        notes
       end
     end
   end

@@ -2,10 +2,10 @@ class Contact
 
   @@counter = 1000 #class variable 
 
-  attr_accessor :notes, :name, :id, :address, :phone, :email
+  attr_accessor :name, :id, :address, :phone, :email
 
   def initialize
-    @notes = ""
+    @notes = []
     @id = Contact.get_id #invoke class methods
   end
 
@@ -16,6 +16,10 @@ class Contact
   def self.get_id # = class method / there are other 3 ways for class methods - which ones? 
     @@counter += 1
     @@counter
+  end
+
+  def notes
+    notes.notes_run
   end
 
 end

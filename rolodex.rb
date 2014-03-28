@@ -2,6 +2,7 @@ class Rolodex
 
   def initialize
     @contacts = []
+    @note = Notes.new
   end
 
   def create_contact(name)
@@ -52,5 +53,24 @@ class Rolodex
       end
     end
   end
+
+=begin 
+  def create_attribute(id, attribute)
+     @contacts.each do |contact|
+      if contact.id == id
+        contact.send(attribute.to_s) = attribute #look up API lookup
+      end
+    end
+  end
+=end
+
+  def note(id)
+    @contacts.each do |contact|
+      if contact.id == id
+        @note.notes_run
+      end
+    end
+  end
+
 
 end
