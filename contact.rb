@@ -2,7 +2,7 @@ class Contact
 
   @@counter = 1000 #class variable 
 
-  attr_accessor :notes, :name, :id
+  attr_accessor :notes, :name, :id, :address, :phone, :email
 
   def initialize
     @notes = ""
@@ -10,7 +10,7 @@ class Contact
   end
 
   def to_s
-    "ID: #{@id}\nName: #{@name}\nNotes:#{@notes}\n------------------"
+    "ID: #{@id}\nName: #{@name}\nAddress: #{@address}\nPhone: #{@phone}\nE-mail: #{@email}\nNotes:#{@notes}\n" + "------------------".blue
   end
 
   def self.get_id # = class method / there are other 3 ways for class methods - which ones? 
