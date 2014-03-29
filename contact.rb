@@ -10,7 +10,7 @@ class Contact
   end
 
   def to_s
-    "ID: #{@id}\nName: #{@name}\nAddress: #{@address}\nPhone: #{@phone}\nE-mail: #{@email}\nNotes:#{@notes}\n" + "------------------".blue
+    "ID: #{@id}\nName: #{@name}\nAddress: #{@address}\nPhone: #{@phone}\nE-mail: #{@email}\nNotes:#{@notes}\n" + "------------------".blue.swap
   end
 
   def self.get_id # = class method / there are other 3 ways for class methods - which ones? 

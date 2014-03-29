@@ -54,6 +54,15 @@ class Rolodex
     end
   end
 
+
+  def show_details(id)
+     @contacts.each do |contact|
+      if contact.id == id
+        puts contact
+      end
+    end
+  end
+
 =begin 
   def create_attribute(id, attribute)
      @contacts.each do |contact|

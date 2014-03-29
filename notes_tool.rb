@@ -1,3 +1,6 @@
+require "./menu"
+require "colorize"
+
 class Notes
 
 @@note_counter = 0
@@ -6,21 +9,14 @@ class Notes
 
   def initialize
     @id_notes = Notes.get_id
+    @menu = Menu.new
     @notes = []
-  end
-
- def menu
-    puts "Adding / changing notes for your contact".green.underline.bold
-    puts "1. Add a new note"
-    puts "2. Change a note"
-    puts "3. Display no notes"
-    puts "0. back to main menu".red
   end
 
   def notes_run
     done = false
       while !done
-        menu 
+        @menu.note_menu 
         input = gets.chomp.to_i
         if input == 0
           done = true

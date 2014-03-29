@@ -1,111 +1,33 @@
 require "./rolodex"
 require "./contact"
 require "./notes_tool"
+require "./processes"
 require "colorize"
 require "debugger"
+require "./menu"
+require 'rubygems'
+require 'termios'
+
+
 
 class Runner
 
   def initialize
     @rolodex = Rolodex.new
-  end
-
-  def main_menu
-    puts "              MAIN MENU              ".cyan.underline.swap
-    puts "1. Add a contact"
-    puts "2. See all contacts"
-    puts "3. Remove a contact"
-    puts "4. Edit a contact"
-    puts "5. Add/change details to a contact"
-    puts "6. Notes tool"
-    puts "0. To exit".red
-    puts "CRM by " +  ("D".yellow +  "O".green +  "M".red +  "I".blue).bold
-  end
-
-  def detail_menu
-    puts "Adding/change detalis to your contact".green.underline.bold
-    puts "1. Add/change an address"
-    puts "2. Add/change a phone number "
-    puts "3. Add/change an e-mail address"
-    puts "0. back to main menu".red
+    @menu = Menu.new
+    @selection = 1
+    @choice = ""
+    @process = Processes.new
   end
 
 
-  def add_contact
-    puts "Enter Customer's name".yellow
-    name = gets.chomp
-    @rolodex.create_contact(name)
-    puts "Contact #{name} has been added.\n".green
-  end
-
-  def show_contacts
-    puts "All contacts\n".green + "------------------".blue.swap
-    @rolodex.show_contacts
-  end
-
-  def remove_contact
-    puts "Enter contact's ID to remove it".yellow
-    id = gets.chomp.to_i
-    @rolodex.remove_contact(id)
-  end
-
-  def edit_contact
-    puts "Enter contact's ID to edit it".yellow
-    id = gets.chomp.to_i
-    puts "Enter new contact name".yellow
-    new_name = gets.chomp
-    @rolodex.edit_contact(id, new_name)
-  end
-
-  def create_address(id)
-    puts "Enter new contacts address".yellow
-    address = gets.chomp
-    @rolodex.create_address(id, address)
-  end
-
-
-  def create_phone(id)
-    puts "Enter new contacts phone number".yellow
-    phone = gets.chomp
-    @rolodex.create_phone(id, phone)
-  end
   
-  def create_email(id)
-    puts "Enter new contacts e-mail".yellow
-    email = gets.chomp
-    @rolodex.create_email(id, email)
-  end
-
-  def add_details
-    puts "Please enter customer ID".yellow
-    id = gets.chomp.to_i
-    done = false
-    while !done
-      detail_menu 
-      input = gets.chomp.to_i
-      if input == 0
-        done = true
-      elsif input == 1
-        create_address(id)      
-      elsif input == 2 
-        create_phone(id)
-      elsif input == 3
-        create_email(id)
-      end
-    end
-  end
-
-  def notes
-    puts "Enter contact's ID".yellow
-    id = gets.chomp.to_i
-    @rolodex.note(id)
-  end
-
+=begin
   def run
     done = false
     while !done
-      main_menu 
-      input = gets.chomp.to_i
+      menu_select
+      input = @choice
       if input == 0
         done = true
       elsif input == 1
@@ -122,6 +44,111 @@ class Runner
         notes
       end
     end
+
+  end
+=end
+
+  def add_details
+    puts "Please enter customer ID".yellow
+    id = gets.chomp.to_i
+    done = false
+    while !done
+      @menu.detail_menu 
+      input = @menu.choice.to_i
+      if input == 0
+        done = true
+      elsif input == 1
+        @process.create_address(id)      
+      elsif input == 2 
+        @process.create_phone(id)
+      elsif input == 3
+        @process.create_email(id)
+      elsif input == 4
+        @process.show_details(id)
+      elsif input == 5
+        done = true
+        add_details
+      end
+    end
+  end
+
+  def choice(input)
+    if input == 0 or input == 7
+      exit
+    elsif input == 1
+      @process.add_contact
+    elsif input == 2
+      @process.show_contacts
+    elsif input == 3
+      @process.remove_contact
+    elsif input == 4
+      @process.edit_contact
+    elsif input == 5
+      add_details
+    elsif input == 6
+      @process.notes
+    end
+  end
+
+  def run
+    done = false
+    while !done
+      @menu.main_menu(@selection)
+      with_unbuffered_input do
+        1000.times do
+          c = STDIN.getc
+          if c == "A"
+            @selection = (@selection - 1) % 7 
+            @menu.main_menu(@selection)
+            done = true
+          elsif c == "B"
+            @selection = (@selection + 1) % 7 
+            @menu.main_menu(@selection)
+            done = true
+          elsif c == "1" 
+            @selection = 1
+            @menu.main_menu(@selection)
+            done = true
+          elsif c == "2" 
+            @selection = 2
+            @menu.main_menu(@selection)
+          elsif c == "3" 
+            @selection = 3
+            @menu.main_menu(@selection)
+          elsif c == "4" 
+            @selection = 4
+            @menu.main_menu(@selection)
+          elsif c == "5" 
+            @selection = 5
+            @menu.main_menu(@selection)
+          elsif c == "6" 
+            @selection = 6
+            @menu.main_menu(@selection)
+          elsif c == "0" 
+            @selection = 0
+            @menu.main_menu(@selection)
+          elsif c == "\n"
+            done = true 
+            choice(@selection)
+          end
+        end
+      end
+    end
+  end
+
+  def with_unbuffered_input
+    old_attrs = Termios.tcgetattr(STDOUT)
+
+    new_attrs = old_attrs.dup
+
+    new_attrs.lflag &= ~Termios::ECHO
+    new_attrs.lflag &= ~Termios::ICANON
+
+    Termios::tcsetattr(STDOUT, Termios::TCSANOW, new_attrs)
+
+    yield
+  ensure
+    Termios::tcsetattr(STDOUT, Termios::TCSANOW, old_attrs)
   end
 
 end
