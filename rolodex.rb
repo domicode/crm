@@ -64,13 +64,17 @@ class Rolodex
   end
 =end
 
+
   def note(id)
     @contacts.each do |contact|
       if contact.id == id
-        @note.notes_run
-      end
+        contact.notes.clear
+        contact.notes << @note.input
+        contact.notes.flatten!
+        end
     end
   end
+
 
 
 end

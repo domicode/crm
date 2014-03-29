@@ -11,7 +11,7 @@ class Runner
   end
 
   def main_menu
-    puts "MAIN MENU".green.bold
+    puts "              MAIN MENU              ".cyan.underline.swap
     puts "1. Add a contact"
     puts "2. See all contacts"
     puts "3. Remove a contact"
@@ -23,20 +23,13 @@ class Runner
   end
 
   def detail_menu
-    puts "Adding/change detalis to your contact".green
+    puts "Adding/change detalis to your contact".green.underline.bold
     puts "1. Add/change an address"
     puts "2. Add/change a phone number "
     puts "3. Add/change an e-mail address"
     puts "0. back to main menu".red
   end
 
-  def notes_menu
-    puts "Adding / changing notes for your contact".green
-    puts "1. Add a new note"
-    puts "2. Change a note"
-    puts "3. Display all notes"
-    puts "0. back to main menu".red
-  end
 
   def add_contact
     puts "Enter Customer's name".yellow
@@ -46,7 +39,7 @@ class Runner
   end
 
   def show_contacts
-    puts "All contacts\n".green + "------------------".blue
+    puts "All contacts\n".green + "------------------".blue.swap
     @rolodex.show_contacts
   end
 
@@ -64,31 +57,28 @@ class Runner
     @rolodex.edit_contact(id, new_name)
   end
 
-  def create_address
-    puts "Enter contact's ID to edit it".yellow
-    id = gets.chomp.to_i
+  def create_address(id)
     puts "Enter new contacts address".yellow
     address = gets.chomp
     @rolodex.create_address(id, address)
   end
 
-  def create_phone
-    puts "Enter contact's ID to edit it".yellow
-    id = gets.chomp.to_i
+
+  def create_phone(id)
     puts "Enter new contacts phone number".yellow
     phone = gets.chomp
     @rolodex.create_phone(id, phone)
   end
   
-  def create_email
-    puts "Enter contact's ID to edit it".yellow
-    id = gets.chomp.to_i
+  def create_email(id)
     puts "Enter new contacts e-mail".yellow
     email = gets.chomp
     @rolodex.create_email(id, email)
   end
 
   def add_details
+    puts "Please enter customer ID".yellow
+    id = gets.chomp.to_i
     done = false
     while !done
       detail_menu 
@@ -96,17 +86,17 @@ class Runner
       if input == 0
         done = true
       elsif input == 1
-        create_address      
+        create_address(id)      
       elsif input == 2 
-        create_phone
+        create_phone(id)
       elsif input == 3
-        create_email
+        create_email(id)
       end
     end
   end
 
   def notes
-    puts "Enter contact's ID"
+    puts "Enter contact's ID".yellow
     id = gets.chomp.to_i
     @rolodex.note(id)
   end
