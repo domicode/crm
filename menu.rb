@@ -95,6 +95,7 @@ class Menu
   end
 
   def note_menu
+    puts "\e[H\e[2J"
     puts "Adding / changing notes for your contact".green.underline.bold
     puts "1. Add a new note"
     puts "2. Change a note"

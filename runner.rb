@@ -2,11 +2,13 @@ require "./rolodex"
 require "./contact"
 require "./notes_tool"
 require "./processes"
+require "./menu"
+require "./keyboard_input"
+require "./choice"
+require "rubygems"
+require "termios"
 require "colorize"
 require "debugger"
-require "./menu"
-require 'rubygems'
-require 'termios'
 
 
 
@@ -16,8 +18,9 @@ class Runner
     @rolodex = Rolodex.new
     @menu = Menu.new
     @selection = 1
-    @choice = ""
+    @choice = Choice.new
     @process = Processes.new
+    @keyboard_input = Keyboard_input.new
   end
 
 
@@ -91,11 +94,11 @@ class Runner
   end
 
   def run
-    done = false
-    while !done
       @menu.main_menu(@selection)
-      with_unbuffered_input do
-        1000.times do
+      @keyboard_input.with_unbuffered_input do
+        done = false
+        while done != true 
+          1000.times do
           c = STDIN.getc
           if c == "A"
             @selection = (@selection - 1) % 7 
@@ -131,7 +134,7 @@ class Runner
             done = true 
             choice(@selection)
           end
-        end
+       end
       end
     end
   end

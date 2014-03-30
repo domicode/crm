@@ -57,7 +57,7 @@ class Notes
 
 
   def show_note
-    puts @notes
+    puts "#{@notes}"
   end
 
 
